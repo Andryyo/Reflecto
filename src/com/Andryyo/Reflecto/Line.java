@@ -37,14 +37,58 @@ public class Line {
 
     public Surface getNearestSurface(Vector<Surface> surfaces, Vector<Point> vertexes)   {
         Vector<Surface> candidates = new Vector<Surface>(surfaces);
+        if (startSurface!=null)
+            candidates.remove(startSurface);
+        Iterator<Surface> i = candidates.iterator();
+        while (i.hasNext())
+        {
+            Surface surface = i.next();
+            if (end.x>start.x)
+            {
+                if (surface.p2.x<start.x)
+                {
+                    i.remove();
+                    i = candidates.iterator();
+                }
+            }
+            else
+                if (surface.p1.x>start.x)
+                {
+                    i.remove();
+                    i = candidates.iterator();
+                }
+            else
+            {
+            Point pmin = surface.p1;
+            Point pmax = surface.p2;
+            if (pmin.y>pmax.y)
+                {
+                    pmin = surface.p2;
+                    pmax = surface.p1;
+                }
+            if (end.y>start.y)
+            {
+                if (pmax.y<start.y)
+                    {
+                        i.remove();
+                        i = candidates.iterator();
+                    }
+            }
+            else
+                if (pmin.y>start.y)
+                {
+                    i.remove();
+                    i = candidates.iterator();
+                }
+            }
+        }
+        if (candidates.isEmpty()) return null;
         for (Point point : vertexes)
         {
             point.distance = point.calculateDistance(this.start);
             point.angle = this.start.calculateAngle(point);
         }
-        if (startSurface!=null)
-            candidates.remove(startSurface);
-        Iterator<Surface> i = candidates.iterator();
+        i = candidates.iterator();
         while (i.hasNext())
         {
             Surface surface = i.next();
@@ -69,25 +113,6 @@ public class Line {
                     i.remove();
                     i = candidates.iterator();
                 }
-        }
-        if (candidates.isEmpty()) return null;
-        i = candidates.iterator();
-        while (i.hasNext())
-        {
-            Surface surface1 = i.next();
-            Iterator<Surface> j = candidates.iterator();
-            while (j.hasNext())
-            {
-                Surface surface2 = j.next();
-                if (surface1!=surface2)
-                if (Math.max(surface1.p1.distance,surface1.p2.distance)<
-                        Math.min(surface2.p1.distance,surface2.p2.distance))
-                {
-                    j.remove();
-                    j = candidates.iterator();
-                    i = candidates.iterator();
-                }
-            }
         }
         if (candidates.isEmpty()) return null;
         nearestSurface = candidates.firstElement();

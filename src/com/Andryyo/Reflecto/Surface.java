@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Андрей
