@@ -83,10 +83,12 @@ public class Line {
             }
         }
         if (candidates.isEmpty()) return null;
-        for (Point point : vertexes)
+        for (Surface surface : candidates)
         {
-            point.distance = point.calculateDistance(this.start);
-            point.angle = this.start.calculateAngle(point);
+            surface.p1.distance = surface.p1.calculateDistance(this.start);
+            surface.p1.angle = this.start.calculateAngle(surface.p1);
+            surface.p2.distance = surface.p2.calculateDistance(this.start);
+            surface.p2.angle = this.start.calculateAngle(surface.p2);
         }
         i = candidates.iterator();
         while (i.hasNext())
@@ -115,20 +117,20 @@ public class Line {
                 }
         }
         if (candidates.isEmpty()) return null;
-        nearestSurface = candidates.firstElement();
-        float shortestdistance = calculateDistance(candidates.firstElement());
-        Point buf = new Point(crossing);
+        float shortestdistance = Float.POSITIVE_INFINITY;
+        Point buf = new Point();
         for (Surface surface : candidates)
         {
             float distance = calculateDistance(surface);
             if (distance<shortestdistance)
             {
+                shortestdistance = distance;
                 buf = new Point(crossing);
                 nearestSurface = surface;
             }
+        }
         crossing = buf;
         end = buf;
-        }
         return nearestSurface;
     }
 

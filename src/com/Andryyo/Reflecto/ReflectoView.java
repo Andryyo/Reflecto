@@ -2,7 +2,9 @@ package com.Andryyo.Reflecto;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -60,22 +62,22 @@ public class ReflectoView extends View {
     public boolean onTouchEvent(MotionEvent me) {
         if (me.getAction()==MotionEvent.ACTION_DOWN)
         {
-            Point point = new Point(me.getX(),me.getY());
-            unusedvertexes.add(point);
-            if (unusedvertexes.size()==2)
-            {
-                vertexes.add(unusedvertexes.lastElement());
-                unusedvertexes.remove(unusedvertexes.lastElement());
-                vertexes.add(unusedvertexes.lastElement());
-                unusedvertexes.remove(unusedvertexes.lastElement());
-                surfaces.add(new Surface(vertexes.get(vertexes.size()-1),
-                        vertexes.get(vertexes.size()-2),1,1));
-                Line lines[] = new Line[1];
-                lines[0] = new Line(new Point(0,0),new Point(1,1),null,1,1);
-                restart(lines);
-                invalidate();
+                Point point = new Point(me.getX(),me.getY());
+                unusedvertexes.add(point);
+                if (unusedvertexes.size()==2)
+                {
+                    vertexes.add(unusedvertexes.lastElement());
+                    unusedvertexes.remove(unusedvertexes.lastElement());
+                    vertexes.add(unusedvertexes.lastElement());
+                    unusedvertexes.remove(unusedvertexes.lastElement());
+                    surfaces.add(new Surface(vertexes.get(vertexes.size()-1),
+                    vertexes.get(vertexes.size()-2),1,1));
+                    Line lines[] = new Line[1];
+                    lines[0] = new Line(new Point(0,0),new Point(1,1),null,1,1);
+                    restart(lines);
+                    invalidate();
+                }
             }
-        }
         return true;
     }
 
